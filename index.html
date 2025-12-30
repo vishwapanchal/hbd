@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Abhishek | Engineering Excellence</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <audio id="bgm" preload="auto" loop autoplay>
+    <source src="happy-birthday-music-300687.mp3" type="audio/mp3" />
+  </audio>
+
+  <audio id="ignite-sfx" preload="auto">
+    <source src="ainsley_harriott_and_his_spicy_meatconverttoaudio.mp3" type="audio/mp3" />
+  </audio>
+
+  <main class="app">
+    <canvas id="c"></canvas>
+
+    <div class="overlay">
+      <div class="header">
+        <div class="label">4TH JANUARY 2026</div>
+      </div>
+
+      <div id="heart-container" title="Drag to Rotate"></div>
+
+      <div class="center-message">
+        <h1 class="hero-text">HAPPY BIRTHDAY ABHISHEK!</h1>
+        <p class="hero-sub">May your designs be strong, your tolerances tight, and your future perfectly engineered.</p>
+      </div>
+
+      <div class="controls">
+        <p class="hint">HOLD BUTTON TO REV ENGINE</p>
+        <button id="btn-ignite" class="btn-main">IGNITE</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

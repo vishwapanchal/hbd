@@ -1,0 +1,209 @@
+:root {
+  --bg: #0b0b15;
+  --text: #ffffff;
+  --accent-gold: #ffd700;
+  --accent-cyan: #00f2ea;
+  
+  --font-display: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+canvas#c {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* UI Overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.8) 120%);
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 8px var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+/* --- 3D Container --- */
+#heart-container {
+  flex: 1 1 auto; 
+  width: 100%;
+  min-height: 250px;
+  position: relative;
+  pointer-events: auto;
+  cursor: grab;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 30px rgba(0,0,0,0.5));
+}
+
+#heart-container:active {
+  cursor: grabbing;
+}
+
+/* --- Text Panel (Background Removed) --- */
+.center-message {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+  padding: 10px 20px;
+  margin: 0 auto 30px auto;
+  max-width: 800px;
+  width: 90%;
+  
+  /* REMOVED GLASS BACKGROUND FOR FLOATING TEXT LOOK */
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+.hero-text {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  line-height: 1.1;
+  margin: 0;
+  color: #ffffff;
+  
+  /* Increased text shadow to ensure visibility without background card */
+  text-shadow: 
+    0 0 5px #000,
+    0 0 10px #000,
+    0 0 20px rgba(255, 215, 0, 0.8),
+    0 0 40px rgba(255, 215, 0, 0.5);
+  
+  text-transform: uppercase;
+}
+
+.hero-sub {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 700; 
+  color: #ffffff;
+  margin-top: 20px;
+  letter-spacing: 1.5px;
+  line-height: 1.6;
+  border-top: 1px solid rgba(255,255,255,0.5);
+  padding-top: 20px;
+  width: 80%;
+  text-shadow: 0 2px 4px #000, 0 0 8px rgba(0,0,0,0.8);
+}
+
+/* --- Controls --- */
+.controls {
+  flex: 0 0 auto;
+  text-align: center;
+  pointer-events: auto;
+  z-index: 20;
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+.btn-main {
+  background: #000;
+  color: #fff;
+  border: 1px solid var(--accent-cyan);
+  padding: 16px 50px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0, 242, 234, 0.2);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.btn-main:hover {
+  background: var(--accent-cyan);
+  color: #000;
+  box-shadow: 0 0 30px var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.btn-main:active {
+  transform: scale(0.98);
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .overlay {
+    flex-direction: row;
+    align-items: center;
+    padding-top: 60px;
+  }
+  .header { position: absolute; top: 15px; left: 20px; width: calc(100% - 40px); }
+  
+  #heart-container {
+    width: 40%;
+    height: 100%;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+    order: 1;
+  }
+  
+  .center-message {
+    width: 50%;
+    margin: 0;
+    order: 2;
+    padding: 20px;
+  }
+  
+  .controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    margin-bottom: 0;
+  }
+}
