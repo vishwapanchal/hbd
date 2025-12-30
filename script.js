@@ -150,33 +150,39 @@ init3D();
   window.addEventListener('resize', resize);
   setTimeout(resize, 0);
 
-  // --- AUDIO LOGIC ---
+  // --- AUDIO LOGIC (UPDATED FOR ANDROID) ---
   
-  // 1. Try to play BGM immediately on load
-  if(bgm) {
-    bgm.play().catch((e) => {
-        console.log("Autoplay blocked. Waiting for interaction.");
-        const enableAudio = () => {
-            bgm.play();
-            window.removeEventListener('click', enableAudio);
-            window.removeEventListener('touchstart', enableAudio);
-            window.removeEventListener('keydown', enableAudio);
-        };
-        window.addEventListener('click', enableAudio);
-        window.addEventListener('touchstart', enableAudio);
-        window.addEventListener('keydown', enableAudio);
-    });
-
-    // 2. UPDATED: Pause BGM when user switches tabs/minimizes
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        bgm.pause();
-      } else {
-        // Resume only if we are back active
-        bgm.play().catch(()=>{});
-      }
-    });
+  // Helper: Try to play BGM, handling browser blocking
+  function tryPlayMusic() {
+    if (bgm && bgm.paused) {
+      bgm.play().then(() => {
+        // Remove listeners if successful
+        document.removeEventListener('click', tryPlayMusic);
+        document.removeEventListener('touchstart', tryPlayMusic);
+      }).catch((e) => {
+        console.log("Autoplay waiting for user interaction...");
+      });
+    }
   }
+
+  // 1. Attempt immediately on load
+  tryPlayMusic();
+
+  // 2. Attach "First Tap" listeners to document (Android requires this)
+  // 'touchstart' is critical for mobile
+  document.addEventListener('click', tryPlayMusic, { once: true });
+  document.addEventListener('touchstart', tryPlayMusic, { once: true });
+  document.addEventListener('keydown', tryPlayMusic, { once: true });
+
+  // 3. Pause BGM when inactive
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if(bgm) bgm.pause();
+    } else {
+      // Resume if we were playing before (or just try to play)
+      tryPlayMusic();
+    }
+  });
 
   function playIgniteSound() {
     if(sfx) {
@@ -453,6 +459,8 @@ init3D();
       btn.style.background="var(--accent-cyan)"; 
       btn.style.color="#000"; 
       
+      // GUARANTEE BGM PLAY ON TAP IF IT WASN'T PLAYING
+      tryPlayMusic();
       playIgniteSound();
       blastConfetti();
   }
